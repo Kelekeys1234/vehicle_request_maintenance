@@ -1,5 +1,6 @@
 package com.action.User;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -8,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -41,12 +45,17 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 	@Result(name="getVehicle" , location ="/listVehicle.jsp"),
 	@Result(name="success" , location ="/success.jsp"),
 	@Result(name = "history" , location ="/history.jsp"),
-	@Result(name = "all" , location ="/allHistory.jsp")
+	@Result(name = "all" , location ="/allHistory.jsp"),
+	@Result(name="index" , location="/success.jsp")	
 	
 })
 
    public class ActionClass extends ActionSupport{
 	private static final long serialVersionUID = -5518082085738840161L;
+	private File excelFile;
+	   private String excelFileContentType;
+	   private HttpServletRequest serveltRequest;
+	
 	// field
 	private User user;
 	private Select select;
@@ -73,6 +82,25 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 			return "vehicle";
 				
 	}
+	@Action("/import")
+	public String Import() {
+		try {
+					
+					File localFile = new File("C:\\Users\\Toshiba.DESKTOP-492DQSF\\Downloads\\excel",  excelFileContentType);
+				    FileUtils.copyFile(excelFile, localFile);
+				System.out.print("uploAD SUCCSFULL");
+				}catch(Exception e) {
+					e.printStackTrace();
+					System.out.print("error");
+				}
+			
+				 return "index";
+			 }
+
+			public void setServletRequest(HttpServletRequest request) {
+				// TODO Auto-generated method stub
+				
+			}
 	// pdf report
 	@Action("/jasper")
 	public String jasper()  {
